@@ -1,0 +1,4 @@
+package lightning
+
+func fetchLightningData() {
+}
