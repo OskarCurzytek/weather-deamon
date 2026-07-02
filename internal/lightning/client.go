@@ -1,4 +1,0 @@
-package lightning
-
-func fetchLightningData() {
-}
