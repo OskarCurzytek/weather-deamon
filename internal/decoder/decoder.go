@@ -5,7 +5,7 @@ import (
 	"regexp"
 	"strconv"
 
-	"mod.com/m/internal/lightning"
+	"mod.com/m/internal/models"
 )
 
 type Decoder struct {
@@ -22,7 +22,7 @@ func NewDecoder() *Decoder {
 	}
 }
 
-func (d *Decoder) Decode(data []byte) *lightning.Lightning {
+func (d *Decoder) Decode(data []byte) *models.Lightning {
 	result := data
 	for k, v := range d.substitutions {
 		result = bytes.ReplaceAll(result, []byte(k), []byte(v))
@@ -46,7 +46,7 @@ func (d *Decoder) Decode(data []byte) *lightning.Lightning {
 	lat, _ := strconv.ParseFloat(latMatch[1], 64)
 	lon, _ := strconv.ParseFloat(lonMatch[1], 64)
 
-	return &lightning.Lightning{
+	return &models.Lightning{
 		Time: t,
 		Lat:  lat,
 		Lon:  lon,

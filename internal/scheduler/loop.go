@@ -6,7 +6,15 @@ import (
 
 	"github.com/gorilla/websocket"
 	"mod.com/m/internal/decoder"
+	"mod.com/m/internal/geo"
+	"mod.com/m/internal/models"
 )
+
+var cityCoords = models.CityCoordinates{
+	Lat:    34.983732,
+	Lon:    -85.606259,
+	Radius: 600,
+}
 
 func Loop() {
 	u := url.URL{Scheme: "wss", Host: "ws7.blitzortung.org", Path: "/"}
@@ -23,14 +31,17 @@ func Loop() {
 	conn.WriteMessage(websocket.TextMessage, []byte(`{"a":111}`))
 
 	for {
-		msgType, msg, err := conn.ReadMessage()
+		_, msg, err := conn.ReadMessage()
 		if err != nil {
 			log.Println("read:", err)
 			return
 		}
 
-		log.Printf("type=%d, len=%d\n", msgType, len(msg))
-
-		log.Println("message:", decoder.NewDecoder().Decode(msg))
+		lightning := decoder.NewDecoder().Decode(msg)
+		if lightning != nil && geo.IsWithinRadius(cityCoords, lightning) {
+			log.Println("lightning detected within radius:", lightning)
+		} else {
+			log.Println("lightning detected outside radius or failed to decode:", lightning)
+		}
 	}
 }
