@@ -11,8 +11,8 @@ import (
 )
 
 var cityCoords = models.CityCoordinates{
-	Lat:    34.983732,
-	Lon:    -85.606259,
+	Lat:    50.0701406,
+	Lon:    19.897822,
 	Radius: 600,
 }
 
@@ -30,6 +30,15 @@ func Loop() {
 
 	conn.WriteMessage(websocket.TextMessage, []byte(`{"a":111}`))
 
+	if err != nil {
+		log.Println("subscribe error:", err)
+		return
+	}
+
+	go resubscribe(conn)
+
+	dec := decoder.NewDecoder()
+
 	for {
 		_, msg, err := conn.ReadMessage()
 		if err != nil {
@@ -37,7 +46,7 @@ func Loop() {
 			return
 		}
 
-		lightning := decoder.NewDecoder().Decode(msg)
+		lightning := dec.Decode(msg)
 		if lightning != nil && geo.IsWithinRadius(cityCoords, lightning) {
 			log.Println("lightning detected within radius:", lightning)
 		} else {
