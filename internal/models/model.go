@@ -11,3 +11,8 @@ type CityCoordinates struct {
 	Lat    float64
 	Lon    float64
 }
+
+type Cell struct {
+	I int
+	J int
+}

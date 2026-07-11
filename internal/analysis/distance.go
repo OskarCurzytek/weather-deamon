@@ -1,4 +1,4 @@
-package geo
+package analysis
 
 import (
 	"math"

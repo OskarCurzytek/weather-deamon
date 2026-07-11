@@ -9,7 +9,7 @@ import (
 	"mod.com/m/internal/models"
 )
 
-func Loop(ch chan<- *models.Lightning) {
+func GetData(ch chan<- *models.Lightning) {
 	u := url.URL{Scheme: "wss", Host: "ws7.blitzortung.org", Path: "/"}
 
 	conn, _, err := websocket.DefaultDialer.Dial(u.String(), nil)

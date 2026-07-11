@@ -4,14 +4,14 @@ import (
 	"log"
 
 	"mod.com/m/internal/config"
-	"mod.com/m/internal/geo"
 	"mod.com/m/internal/models"
 )
 
-func ProcessLightningData(ch <-chan *models.Lightning) {
+func ProcessLightningData(ch <-chan *models.Lightning, chPost chan<- *models.Lightning) {
 	for lightning := range ch {
-		if geo.IsWithinRadius(config.CityCoords, lightning) {
+		if IsWithinRadius(config.CityCoords, lightning) {
 			log.Println("Lightning detected within radius:", lightning)
+			chPost <- lightning
 		} else {
 			log.Println("Lightning detected outside radius:", lightning)
 		}

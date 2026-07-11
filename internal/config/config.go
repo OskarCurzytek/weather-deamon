@@ -7,3 +7,5 @@ var CityCoords = models.CityCoordinates{
 	Lon:    19.897822,
 	Radius: 600,
 }
+
+var KmPerDegree float64 = 111
